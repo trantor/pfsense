@@ -111,7 +111,18 @@ include("head.inc");
 			  <?php $i = 0; foreach ($a_gifs as $gif): ?>
                 <tr  ondblclick="document.location='interfaces_gif_edit.php?id=<?=$i;?>'">
                   <td class="listlr">
-					<?=htmlspecialchars(convert_friendly_interface_to_friendly_descr($gif['if']));?>
+					<?php
+                        $valori = array();
+                        if ( preg_match('/vip([0-9]+)/',$gif['if'],&$valori) )
+                        {
+                            foreach ($config['virtualip']['vip'] as $vip) {
+                                if (($vip['mode'] == "carp" || $vip['mode'] == "carpdev") and $vip['vhid'] == $valori[1])
+                                    echo strtoupper($gif['if']) . " CARP " . strtoupper($vip['interface']) . " " . $vip['subnet'];
+                            }
+                        } else {
+                            echo htmlspecialchars(convert_friendly_interface_to_friendly_descr($gif['if']));
+                        }
+                    ?>
                   </td>
                   <td class="listr">
 					<?=htmlspecialchars($gif['remote-addr']);?>

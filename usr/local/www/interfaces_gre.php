@@ -112,7 +112,18 @@ include("head.inc");
 			  <?php $i = 0; foreach ($a_gres as $gre): ?>
                 <tr  ondblclick="document.location='interfaces_vlan_gre.php?id=<?=$i;?>'">
                   <td class="listlr">
-					<?=htmlspecialchars(convert_friendly_interface_to_friendly_descr($gre['if']));?>
+					<?php
+                        $valori = array();
+                        if ( preg_match('/vip([0-9]+)/',$gre['if'],&$valori) )
+                        {
+                            foreach ($config['virtualip']['vip'] as $vip) {
+                                if (($vip['mode'] == "carp" || $vip['mode'] == "carpdev") and $vip['vhid'] == $valori[1])
+                                    echo strtoupper($gre['if']) . " CARP " . strtoupper($vip['interface']) . " " . $vip['subnet'];
+                            }
+                        } else {
+                            echo htmlspecialchars(convert_friendly_interface_to_friendly_descr($gre['if']));
+                        }
+                    ?>
                   </td>
                   <td class="listr">
 					<?=htmlspecialchars($gre['remote-addr']);?>
