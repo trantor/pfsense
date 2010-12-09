@@ -138,7 +138,7 @@ include("head.inc");
 						$portlist = get_configured_interface_with_descr();
 						$carplist = get_configured_carp_interface_list();
 						foreach ($carplist as $cif => $carpip)
-							$portlist[$cif] = strtoupper($cif) . " ({$carpip})";
+							$portlist[$cif] = $carpip." (".get_vip_descr($carpip).")";
 					  	foreach ($portlist as $ifn => $ifinfo) {
 							echo "<option value=\"{$ifn}\"";
 							if ($ifn == $pconfig['if'])
